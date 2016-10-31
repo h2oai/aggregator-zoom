@@ -12,6 +12,7 @@ export function getMembersData(vis) {
 
   const exemplarId = vis.exemplarPointsVisible[0].id;
   const membersFrame = `members_exemplar${exemplarId}`;
+  const aggregatorModelID = 'aggregator-glm-81e8729d-e7a5-4b36-ae26-c6c55a2d94c5';
 
   const server = vis.apiConfig.server;
   const port = vis.apiConfig.port;
@@ -28,7 +29,7 @@ export function getMembersData(vis) {
     drawMemberCircles(vis);
   }
 
-  const generateMemberFrameUrl = `${baseUrl}/Predictions/models/aggregatormodel/frames/null`;
+  const generateMemberFrameUrl = `${baseUrl}/Predictions/models/${aggregatorModelID}/frames/null`;
   const generateMemberFrameData = `predictions_frame=members_exemplar${exemplarId}&exemplar_index=${exemplarId}`;
   console.log('generateMemberFrameUrl', generateMemberFrameUrl);
   console.log('generateMemberFrameData', generateMemberFrameData);
@@ -40,28 +41,22 @@ export function getMembersData(vis) {
   }
 
   // create a frame containing the members for a point
-  d3.request(generateMemberFrameUrl)
-    .header('Content-Type', 'application/x-www-form-urlencoded')
-    .post(generateMemberFrameData, generateMemberFrameCallback);
+  // d3.request(generateMemberFrameUrl)
+  //   .header('Content-Type', 'application/x-www-form-urlencoded')
+  //   .post(generateMemberFrameData, generateMemberFrameCallback);
 
-  // function generateMemberFrameRequestWrapper() {
-  //   generateMemberFrameRequest.post(generateMemberFrameData, generateMemberFrameCallback);
-  // }
+  const fetchOptions = {
+    method: 'POST',
+    body: generateMemberFrameData,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  };
 
-  // console.log('type of generateMemberFrameRequest...', typeof generateMemberFrameRequest.post(generateMemberFrameData, generateMemberFrameCallback));
-
-  /* abandon d3.queue approach for now */
-  // d3.queue(1)
-  //   .defer(generateMemberFrameRequestWrapper)
-  //   .defer(d3.request, getMemberFrameUrl)
-  //   // .defer(d3.request, "http://www.google.com:81")
-  //   .awaitAll((error, results) => {
-  //     if (error) {
-  //       console.log('error from awaitAll', error);
-  //       throw error;
-  //     }
-  //     console.log(results);
-  //     // generateMemberFrameCallback(error, results[0]);
-  //     getMemberFrameCallback(error, results[0]);
-  //   });
+  fetch(generateMemberFrameUrl, fetchOptions)
+    .then((res) => res.json())
+    .then((json) => {
+      console.log(json);
+      generateMemberFrameCallback(null, json);
+    });
 }
