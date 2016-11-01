@@ -2,17 +2,18 @@ import { parseResponse } from './parseResponse';
 import { drawMemberCircles } from './drawMemberCircles';
 import d3 from 'd3';
 import d3_request from 'd3-request';
-// import d3_queue from 'd3-queue';
 d3.request = d3_request.request;
-// d3.queue = d3_queue.queue;
 
 export function getMembersData(vis) {
   // call the h2o-3 API to get members data
   // for the specified exemplar
 
+  //
+  // set config
+  //
   const exemplarId = vis.exemplarPointsVisible[0].id;
-  const membersFrame = `members_exemplar${exemplarId}`;
-  const aggregatorModelID = 'aggregator-glm-81e8729d-e7a5-4b36-ae26-c6c55a2d94c5';
+  const frameID = `members_exemplar${exemplarId}`;
+  const aggregatorModelID = vis.apiConfig.aggregatorModelID;
 
   const server = vis.apiConfig.server;
   const port = vis.apiConfig.port;
@@ -20,43 +21,89 @@ export function getMembersData(vis) {
   const columnCount = vis.apiConfig.columnCount;
   const baseUrl = `http://${server}:${port}/3`;
 
-  const getMemberFrameUrl = `${baseUrl}/Frames/${membersFrame}?column_offset=${columnOffset}&column_count=${columnCount}`;
-  console.log('getmemberFrameUrl', getMemberFrameUrl);
+  // with the default rowCount, which is the min(actual rowCount, 100 rows)
+  const getMemberFrameDefaultRowCountUrl = `${baseUrl}/Frames/${frameID}?column_offset=${columnOffset}&column_count=${columnCount}`;
+  console.log('getMemberFrameDefaultRowCountUrl', getMemberFrameDefaultRowCountUrl);
 
-  function getMemberFrameCallback(error, response) {
-    console.log('getMemberFrameCallback response', response);
-    vis.detailData = parseResponse(response);
-    drawMemberCircles(vis);
-  }
+  // with the actual rowCount
+  // declare in this higher scope, set in a function
+  let getMemberFrameActualRowCountUrl;
 
   const generateMemberFrameUrl = `${baseUrl}/Predictions/models/${aggregatorModelID}/frames/null`;
   const generateMemberFrameData = `predictions_frame=members_exemplar${exemplarId}&exemplar_index=${exemplarId}`;
   console.log('generateMemberFrameUrl', generateMemberFrameUrl);
   console.log('generateMemberFrameData', generateMemberFrameData);
 
-  function generateMemberFrameCallback(error, response) {
-    console.log('generateMemberFrameCallback response', response);
-    d3.request(getMemberFrameUrl)
-      .get(getMemberFrameCallback);
-  }
-
-  // create a frame containing the members for a point
-  // d3.request(generateMemberFrameUrl)
-  //   .header('Content-Type', 'application/x-www-form-urlencoded')
-  //   .post(generateMemberFrameData, generateMemberFrameCallback);
-
-  const fetchOptions = {
+  //
+  // generate the frame with member points for the current exemplar point
+  //
+  let fetchOptions = {
     method: 'POST',
     body: generateMemberFrameData,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   };
-
   fetch(generateMemberFrameUrl, fetchOptions)
-    .then((res) => res.json())
-    .then((json) => {
+    .then(res => res.json())
+    .then(json => {
       console.log(json);
-      generateMemberFrameCallback(null, json);
+      getMemberFrameDefaultRowCount(null, json);
     });
+
+  function getMemberFrameDefaultRowCount(error, response) {
+    console.log('getMemberFrameDefaultRowCount response', response);
+    d3.request(getMemberFrameDefaultRowCountUrl)
+      // .get(getMemberFrameCallback);
+      .get(getMemberFrameRowCount);
+  }
+
+  //
+  // get the number of rows in the members frame
+  //
+  function getMemberFrameRowCount() {
+    // ignore fields that are not the row count
+    const getRowsFrameOptions = '?_exclude_fields=frames/__meta,frames/chunk_summary,frames/default_percentiles,frames/columns,frames/distribution_summary,__meta';
+    // const getRowsFrameOptions = '';
+    const getRowsRequestURL = `http://${server}:${port}/3/Frames/${frameID}/summary${getRowsFrameOptions}`;
+
+    fetchOptions = {
+      method: 'GET'
+    };
+    fetch(getRowsRequestURL, fetchOptions)
+      .then(res => res.json())
+      .then(json => {
+        console.log('json from getRowsRequest response', json);
+        const parsedRowResponse = json;
+
+        const frame = {
+          rowCount: parsedRowResponse.frames[0].rows,
+          columnCount: parsedRowResponse.frames[0].column_count,
+          frameID: parsedRowResponse.frames[0].frame_id.name
+        };
+        console.log('frame', frame);
+
+        const rowCount = frame.rowCount;
+        getMemberFrameActualRowCountUrl = `${baseUrl}/Frames/${frameID}?column_offset=${columnOffset}&column_count=${columnCount}&row_count=${rowCount}`;
+        console.log('getMemberFrameActualRowCountUrl', getMemberFrameActualRowCountUrl);
+
+        d3.request(getMemberFrameActualRowCountUrl)
+          .get(getMemberFrameActualRowCount);
+      });
+  }
+
+  //
+  // get the member frame with all of the rows
+  //
+  function getMemberFrameActualRowCount(error, response) {
+    console.log('getMemberFrameActualRowCount response', response);
+    vis.detailData = parseResponse(response);
+    drawMemberCircles(vis);
+  }
+
+  // function getMemberFrameCallback(error, response) {
+  //   console.log('getMemberFrameCallback response', response);
+  //   vis.detailData = parseResponse(response);
+  //   drawMemberCircles(vis);
+  // }
 }

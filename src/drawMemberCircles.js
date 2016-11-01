@@ -2,6 +2,7 @@ import { translatePoints } from './translatePoints';
 
 export function drawMemberCircles(vis) {
   console.log("d3.selectAll('.detailDot')[0].length", d3.selectAll('.detailDot')[0].length);
+  console.log('vis.detailData.length', vis.detailData.length);
   if (d3.selectAll('g.detailDot')[0].length === 0) {
     const objects = d3.selectAll('.objects');
 
