@@ -22,10 +22,7 @@ export function getFrameData(error, response, options, callback) {
   const getFrameMetricsOptions = '?_exclude_fields=frames/__meta,frames/chunk_summary,frames/default_percentiles,frames/columns,frames/distribution_summary,__meta';
   const getFrameMetricsURL = `${baseURL}/Frames/${frameID}/summary${getFrameMetricsOptions}`;
 
-  const fetchOptions = {
-    method: 'GET'
-  };
-  fetch(getFrameMetricsURL, fetchOptions)
+  fetch(getFrameMetricsURL, { method: 'GET' })
     .then(res => res.json())
     .then(json => {
       console.log('json response from getFrameMetrics request', json);
@@ -42,7 +39,12 @@ export function getFrameData(error, response, options, callback) {
       const getFrameURL = `${baseURL}/Frames/${frameID}?column_offset=${columnOffset}&column_count=${columnCount}&row_count=${rowCount}`;
       console.log('getFrameURL', getFrameURL);
 
-      d3.request(getFrameURL)
-        .get(callback);
+      fetch(getFrameURL, { method: 'GET' })
+        .then(res => res.json())
+        .then(json => {
+          callback(null, json);
+        });
+      // d3.request(getFrameURL)
+      //   .get(callback);
     });
 }

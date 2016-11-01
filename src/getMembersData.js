@@ -1,4 +1,4 @@
-import { parseResponse } from './parseResponse';
+import { parseResponseObject } from './parseResponseObject';
 import { drawMemberCircles } from './drawMemberCircles';
 import { getFrameData } from './getFrameData';
 import d3 from 'd3';
@@ -100,13 +100,13 @@ export function getMembersData(vis) {
   //
   // function getMemberFrameActualRowCount(error, response) {
   //   console.log('getMemberFrameActualRowCount response', response);
-  //   vis.detailData = parseResponse(response);
+  //   vis.detailData = parseResponseObject(response);
   //   drawMemberCircles(vis);
   // }
 
   function drawMembersData(error, response) {
-    console.log('getMemberFrameActualRowCount response', response);
-    vis.detailData = parseResponse(response);
+    console.log('response passed to drawMembersData', response);
+    vis.detailData = parseResponseObject(response);
     drawMemberCircles(vis);
   }
 }

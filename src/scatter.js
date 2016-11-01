@@ -1,4 +1,4 @@
-import { parseResponse } from './parseResponse';
+import { parseResponseObject } from './parseResponseObject';
 import { plotExemplars } from './plotExemplars';
 import dat from 'dat-gui';
 import d3 from 'd3';
@@ -71,7 +71,9 @@ export function drawScatterplot() {
 
   function callback(error, response) {
     console.log('response', response);
-    vis.exemplarData = parseResponse(response);
+    const responseData = JSON.parse(response.response);
+    console.log('responseData', responseData);
+    vis.exemplarData = parseResponseObject(responseData);
     plotExemplars(vis);
   }
 

@@ -1,8 +1,5 @@
-export function parseResponse(response) {
-  const responseData = JSON.parse(response.response);
-  console.log('responseData', responseData);
-
-  const columnsData = responseData.frames[0].columns;
+export function parseResponseObject(responseObject) {
+  const columnsData = responseObject.frames[0].columns;
   const points = [];
   columnsData.forEach(d => {
     if (Object.prototype.toString.call(d.data) === '[object Array]') {
