@@ -29,6 +29,7 @@
     "no-param-reassign": "off",
     "no-loop-func": "off",
     "camelcase": "off",
-    "jsx-quotes": ["error", "prefer-single"]
+    "jsx-quotes": ["error", "prefer-single"],
+    "no-use-before-define": "off"
   },
 }
