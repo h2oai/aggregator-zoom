@@ -54,7 +54,6 @@ export function getMembersData(vis) {
   function getMemberFrameDefaultRowCount(error, response) {
     console.log('getMemberFrameDefaultRowCount response', response);
     d3.request(getMemberFrameDefaultRowCountUrl)
-      // .get(getMemberFrameCallback);
       .get(getMemberFrameRowCount);
   }
 
@@ -64,7 +63,6 @@ export function getMembersData(vis) {
   function getMemberFrameRowCount() {
     // ignore fields that are not the row count
     const getRowsFrameOptions = '?_exclude_fields=frames/__meta,frames/chunk_summary,frames/default_percentiles,frames/columns,frames/distribution_summary,__meta';
-    // const getRowsFrameOptions = '';
     const getRowsRequestURL = `http://${server}:${port}/3/Frames/${frameID}/summary${getRowsFrameOptions}`;
 
     fetchOptions = {
@@ -100,10 +98,4 @@ export function getMembersData(vis) {
     vis.detailData = parseResponse(response);
     drawMemberCircles(vis);
   }
-
-  // function getMemberFrameCallback(error, response) {
-  //   console.log('getMemberFrameCallback response', response);
-  //   vis.detailData = parseResponse(response);
-  //   drawMemberCircles(vis);
-  // }
 }
