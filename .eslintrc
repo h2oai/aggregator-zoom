@@ -30,6 +30,7 @@
     "no-loop-func": "off",
     "camelcase": "off",
     "jsx-quotes": ["error", "prefer-single"],
-    "no-use-before-define": "off"
+    "no-use-before-define": "off",
+    "no-shadow": "off"
   },
 }
