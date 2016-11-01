@@ -1,7 +1,3 @@
-import d3 from 'd3';
-import d3_request from 'd3-request';
-d3.request = d3_request.request;
-
 export function getFrameData(error, response, options, callback) {
   console.log('getFrame was called');
   console.log('response passed to getFrame', response);
@@ -44,7 +40,5 @@ export function getFrameData(error, response, options, callback) {
         .then(json => {
           callback(null, json);
         });
-      // d3.request(getFrameURL)
-      //   .get(callback);
     });
 }
