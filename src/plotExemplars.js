@@ -63,7 +63,19 @@ export function plotExemplars(vis) {
   vis.tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
-    .html(d => `${vis.xCat}: ${d[vis.xCat]} <br> ${vis.yCat}: ${d[vis.yCat]}`);
+    // TODO: use config to set this
+    .html(d => {
+      let tooltipVariablesHTML = '';
+      if (typeof vis.tooltipVariables !== 'undefined') {
+        if (vis.tooltipVariables.length === 1) {
+          tooltipVariablesHTML = `${d[vis.tooltipVariables[0]]} <br> `;
+        } else {
+          tooltipVariablesHTML = vis.tooltipVariables.reduce((a, b) => `${d[a]} <br> `.concat(`${d[b]} <br> `));
+        }
+      }
+      console.log('tooltipVariablesHTML', tooltipVariablesHTML);
+      return `${tooltipVariablesHTML}'members': ${d.counts} <br> ${vis.xCat}: ${d[vis.xCat]} <br> ${vis.yCat}: ${d[vis.yCat]}`;
+    });
 
   vis.svg.call(vis.tip);
 

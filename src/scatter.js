@@ -54,10 +54,23 @@ export function drawScatterplot() {
     defaultYVariable: 'deviance'
   };
 
-  vis.apiConfig = vis.grupoBimboGLMConfig;
+  vis.worldCitiesConfig = {
+    server: '172.16.2.141',
+    port: '54321',
+    aggregatorModelID: 'aggregator-f34c7f25-18f6-4eab-a4e2-1868378fde15',
+    exemplarFrame: 'aggregated_Key_Frame__worldcitiespop.hex_by_aggregator-f34c7f25-18f6-4eab-a4e2-1868378fde15',
+    columnOffset: '0',
+    columnCount: '8',
+    defaultXVariable: 'Latitude',
+    defaultYVariable: 'Longitude',
+    tooltipVariables: ['City']
+  };
+
+  vis.apiConfig = vis.worldCitiesConfig;
 
   vis.xCat = vis.apiConfig.defaultXVariable;
   vis.yCat = vis.apiConfig.defaultYVariable;
+  vis.tooltipVariables = vis.apiConfig.tooltipVariables;
   // const rCat = 'C2';
   // const colorCat = 'C3';
 
