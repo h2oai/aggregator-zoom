@@ -28,7 +28,7 @@ export function drawMemberCircles(vis) {
       .style('stroke-opacity', 0)
       // .style('stroke', d => color(d[colorCat]); })
       // .style('stroke', 'darkorange');
-      .style('stroke', '#1f78b4')
+      .style('stroke', '#1f78b4');
       // .style('stroke-width', function (d) {
       //   return 3 * Math.sqrt(d[rCat] / Math.PI);
       //  })

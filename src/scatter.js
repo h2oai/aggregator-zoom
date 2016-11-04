@@ -1,5 +1,6 @@
 import { parseResponseObject } from './parseResponseObject';
 import { plotExemplars } from './plotExemplars';
+import { getFrameData } from './getFrameData';
 import dat from 'dat-gui';
 import d3 from 'd3';
 import d3_request from 'd3-request';
@@ -77,21 +78,29 @@ export function drawScatterplot() {
   const server = vis.apiConfig.server;
   const port = vis.apiConfig.port;
   const exemplarsFrame = vis.apiConfig.exemplarFrame;
+  const frameID = exemplarsFrame;
   const columnOffset = vis.apiConfig.columnOffset;
-  const columnCount = vis.apiConfig.columnCount;
+  // const columnCount = vis.apiConfig.columnCount;
+  // const queryUrl = `http://${server}:${port}/3/Frames/${exemplarsFrame}?column_offset=${columnOffset}&column_count=${columnCount}`;
 
-  const queryUrl = `http://${server}:${port}/3/Frames/${exemplarsFrame}?column_offset=${columnOffset}&column_count=${columnCount}`;
-
-  function callback(error, response) {
+  function parseAndPlot(error, response) {
     console.log('response', response);
-    const responseData = JSON.parse(response.response);
-    console.log('responseData', responseData);
-    vis.exemplarData = parseResponseObject(responseData);
+    // const responseData = JSON.parse(response.response);
+    // console.log('responseData', responseData);
+    vis.exemplarData = parseResponseObject(response);
     plotExemplars(vis);
   }
 
-  d3.request(queryUrl)
-    .get(callback);
+  const getFrameDataOptions = {
+    frameID,
+    server,
+    port,
+    columnOffset
+  };
+  getFrameData(null, null, getFrameDataOptions, parseAndPlot);
+
+  // d3.request(queryUrl)
+  //   .get(callback);
 
   const gui = new dat.GUI();
   gui.close();
