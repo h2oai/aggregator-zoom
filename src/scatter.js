@@ -61,8 +61,8 @@ export function drawScatterplot() {
     exemplarFrame: 'aggregated_Key_Frame__worldcitiespop.hex_by_aggregator-f34c7f25-18f6-4eab-a4e2-1868378fde15',
     columnOffset: '0',
     columnCount: '8',
-    defaultXVariable: 'Latitude',
-    defaultYVariable: 'Longitude',
+    defaultXVariable: 'Longitude',
+    defaultYVariable: 'Latitude',
     tooltipVariables: ['City']
   };
 

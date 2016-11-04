@@ -22,11 +22,13 @@ export function drawMemberCircles(vis) {
       //   return 1 * Math.sqrt(rScale(d[rCat]) / Math.PI);
       // })
       .attr('r', 2)
-      .style('fill', 'darkorange')
+      // .style('fill', 'darkorange')
+      .style('fill', '#1f78b4')
       .style('fill-opacity', 0)
       .style('stroke-opacity', 0)
       // .style('stroke', d => color(d[colorCat]); })
-      .style('stroke', 'darkorange');
+      // .style('stroke', 'darkorange');
+      .style('stroke', '#1f78b4')
       // .style('stroke-width', function (d) {
       //   return 3 * Math.sqrt(d[rCat] / Math.PI);
       //  })
@@ -36,7 +38,8 @@ export function drawMemberCircles(vis) {
       .transition()
         .duration(500)
         // .attr('transform', translatePoints)
-        .style('fill-opacity', 0.7);
+        // .style('fill-opacity', 0.7);
+        .style('fill-opacity', 0.3);
         // .style('stroke-opacity', 0.8);
 
     d3.selectAll('circle.detailDot')
