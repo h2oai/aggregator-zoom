@@ -49,7 +49,10 @@ export function getMembersData(vis) {
       frameID,
       server,
       port,
-      columnOffset
+      columnOffset,
+      xVariable: vis.xCat,
+      yVariable: vis.yCat,
+      maxMembers: 663 // rowCount of current top-level exemplars frame
     };
     d3.request(getMemberFrameDefaultRowCountUrl)
       .get((err, res) => getFrameData(err, res, getFrameDataOptions, drawMembersData));
