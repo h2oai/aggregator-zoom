@@ -27,6 +27,6 @@ export function parseResponseObject(responseObject) {
 
   const parsedData = points;
 
-  console.log('parsedData', parsedData);
+  // console.log('parsedData', parsedData);
   return parsedData;
 }
