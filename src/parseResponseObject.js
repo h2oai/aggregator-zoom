@@ -18,8 +18,8 @@ export function parseResponseObject(responseObject) {
       });
     }
   });
-  console.log('columnsData', columnsData);
-  console.log('points', points);
+  // console.log('columnsData', columnsData);
+  // console.log('points', points);
 
   points.forEach((d, i) => {
     d.id = i;
