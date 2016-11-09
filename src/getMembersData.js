@@ -6,6 +6,7 @@ import d3_request from 'd3-request';
 d3.request = d3_request.request;
 
 export function getMembersData(vis) {
+  console.log('getMembersData was called');
   // call the h2o-3 API to get members data
   // for the specified exemplar
   const exemplarId = vis.exemplarPointsVisible[0].id;

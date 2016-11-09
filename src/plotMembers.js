@@ -18,11 +18,16 @@ export function plotMembers(vis) {
     return xWithin && yWithin;
   });
 
-  console.log('vis.exemplarPointsVisible', vis.exemplarPointsVisible);
+  if (vis.exemplarPointsVisible.length <= 4) {
+    console.log('vis.exemplarPointsVisible', vis.exemplarPointsVisible);
+  }
   console.log('vis.exemplarPointsVisible.length', vis.exemplarPointsVisible.length);
 
   // get the data and show the member points
   if (vis.exemplarPointsVisible.length === 1) {
+    console.log('//');
+    console.log('// plotting members of the current point');
+    console.log('//');
     getMembersData(vis);
   }
 
