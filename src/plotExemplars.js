@@ -189,10 +189,11 @@ export function plotExemplars(vis) {
 
   // drawVoronoiPaths(vis, vis.exemplarData);
 
+  // set the extent of the zoom
   vis.zoomBeh = d3.behavior.zoom()
     .x(vis.x)
-    .y(vis.y)
-    .scaleExtent([0, 500]);
+    .y(vis.y);
+    // .scaleExtent([0, 500]);
 
   vis.zoomBeh
     .on('zoom', () => zoom(vis)) // this is where the action continues

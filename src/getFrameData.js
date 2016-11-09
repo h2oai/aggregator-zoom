@@ -16,19 +16,20 @@ export function getFrameData(error, response, options, callback) {
   const xVariable = options.xVariable;
   const yVariable = options.yVariable;
   const maxMembers = options.maxMembers;
+  // const modelID = options.modelID;
 
   //
   // get the number of rows in the specified frame
   //
   // ignore fields that are not the row count
   const getFrameMetricsOptions = '?_exclude_fields=frames/__meta,frames/chunk_summary,frames/default_percentiles,frames/distribution_summary,__meta';
-  const getFrameMetricsURL = `${baseURL}/Frames/${frameID}/summary${getFrameMetricsOptions}`;
+  let getFrameMetricsURL = `${baseURL}/Frames/${frameID}/summary${getFrameMetricsOptions}`;
 
   fetch(getFrameMetricsURL, { method: 'GET' })
     .then(res => res.json())
     .then(json => {
       console.log('json response from getFrameMetrics request', json);
-      const frame = {
+      let frame = {
         frameID: json.frames[0].frame_id.name,
         rowCount: json.frames[0].rows,
         columnCount: json.frames[0].column_count,
@@ -40,17 +41,80 @@ export function getFrameData(error, response, options, callback) {
         typeof maxMembers !== 'undefined' &&
         frame.rowCount > maxMembers
       ) {
-        // aggregate the large members frame
-        const ignoredColumns = _.pullAll(frame.columns, [xVariable, yVariable]);
-        console.log('ignoredColumns from getFrameData', ignoredColumns);
-        const aggregateFrameOptions = {
-          server,
-          port,
-          frameID: frame.frameID,
-          radiusScale: 0.05, // TODO: pick a data-driven radius scale
-          ignoredColumns
-        };
-        aggregateFrame(aggregateFrameOptions);
+        const modelID = `aggregator-${frameID}`;
+        //
+        // check if modelID already exists on our h2o cluster
+        //
+        const getModelsURL = `http://${server}:${port}/3/Models`;
+        fetch(getModelsURL)
+          .then(res => res.json())
+          .then(json => {
+            const modelIDs = json.models.map(d => d.model_id.name);
+            if (modelIDs.indexOf(modelID) > -1) {
+              console.log(`modelID ${modelID} already exists in h2o-3`);
+              //
+              // go ahead and get the exemplars
+              //
+              const getCurrentModelURL = `http://${server}:${port}/3/Models/${modelID}`;
+              fetch(getCurrentModelURL)
+                .then(res => res.json())
+                .then(json => {
+                  const exemplarsFrameID = json.models[0].output.output_frame.name;
+                  console.log('exemplarsFrameID', exemplarsFrameID);
+                  if (exemplarsFrameID !== null) {
+                    //
+                    // get the rowCount for this sub-member frame
+                    //
+                    getFrameMetricsURL = `${baseURL}/Frames/${exemplarsFrameID}/summary${getFrameMetricsOptions}`;
+                    fetch(getFrameMetricsURL, { method: 'GET' })
+                      .then(res => res.json())
+                      .then(json => {
+                        console.log('json response from getFrameMetrics request', json);
+                        frame = {
+                          frameID: json.frames[0].frame_id.name,
+                          rowCount: json.frames[0].rows,
+                          columnCount: json.frames[0].column_count,
+                          columns: json.frames[0].columns.map(d => d.label)
+                        };
+                        console.log('frame', frame);
+                        //
+                        // get the data for the sub-member frame
+                        // specify columnCount and rowCount so that h2o-3 will return all data from the frame
+                        //
+                        const columnCount = frame.columnCount;
+                        const rowCount = frame.rowCount;
+                        const getFrameURL = `${baseURL}/Frames/${exemplarsFrameID}?column_offset=${columnOffset}&column_count=${columnCount}&row_count=${rowCount}`;
+                        console.log('getFrameURL', getFrameURL);
+
+                        fetch(getFrameURL, { method: 'GET' })
+                          .then(res => res.json())
+                          .then(json => {
+                            // pass the json data to the provided callback
+                            callback(null, json);
+                          });
+                      });
+                  } else {
+                    console.error('exemplarsFrameID is', exemplarsFrameID);
+                  }
+                });
+            } else {
+              //
+              // modelID is new, ok to proceed
+              // aggregate the large members frame
+              //
+              const ignoredColumns = _.pullAll(frame.columns, [xVariable, yVariable]);
+              console.log('ignoredColumns from getFrameData', ignoredColumns);
+              const aggregateFrameOptions = {
+                server,
+                port,
+                frameID: frame.frameID,
+                radiusScale: 0.75, // TODO: pick a data-driven radius scale
+                ignoredColumns,
+                modelID
+              };
+              aggregateFrame(aggregateFrameOptions);
+            }
+          });
       } else {
         // specify columnCount and rowCount so that h2o-3 will return all data from the frame
         const columnCount = frame.columnCount;
@@ -61,6 +125,7 @@ export function getFrameData(error, response, options, callback) {
         fetch(getFrameURL, { method: 'GET' })
           .then(res => res.json())
           .then(json => {
+            // pass the json data to the provided callback
             callback(null, json);
           });
       }

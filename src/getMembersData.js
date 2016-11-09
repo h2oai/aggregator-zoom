@@ -17,6 +17,10 @@ export function getMembersData(vis) {
   const columnOffset = vis.apiConfig.columnOffset;
   const baseUrl = `http://${server}:${port}/3`;
 
+  const xVariable = vis.xCat;
+  const yVariable = vis.yCat;
+  const maxMembers = 663;
+
   // with the default rowCount, which is the min(actual rowCount, 100 rows)
   const getMemberFrameDefaultRowCountUrl = `${baseUrl}/Frames/${frameID}?column_offset=${columnOffset}`; // &column_count=${columnCount}
   console.log('getMemberFrameDefaultRowCountUrl', getMemberFrameDefaultRowCountUrl);
@@ -40,9 +44,23 @@ export function getMembersData(vis) {
     .then(res => res.json())
     .then(json => {
       console.log(json);
-      getMemberFrameDefaultRowCount(null, json);
+      // getMemberFrameDefaultRowCount(null, json);
+      //
+      // get the frame with member points
+      //
+      const getFrameDataOptions = {
+        frameID,
+        server,
+        port,
+        columnOffset,
+        xVariable,
+        yVariable,
+        maxMembers
+      };
+      getFrameData(null, json, getFrameDataOptions, drawMembersData);
     });
 
+  /*
   function getMemberFrameDefaultRowCount(error, response) {
     console.log('getMemberFrameDefaultRowCount response', response);
     const getFrameDataOptions = {
@@ -57,6 +75,7 @@ export function getMembersData(vis) {
     d3.request(getMemberFrameDefaultRowCountUrl)
       .get((err, res) => getFrameData(err, res, getFrameDataOptions, drawMembersData));
   }
+  */
 
   function drawMembersData(error, response) {
     console.log('response passed to drawMembersData', response);
