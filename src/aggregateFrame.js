@@ -1,7 +1,8 @@
 import { poll } from './poll';
 
 export function aggregateFrame(options) {
-  console.log('aggregate was called');
+  console.log('aggregateFrame was called');
+  console.log('options passed to aggregateFrame');
   const server = options.server;
   const port = options.port;
   const modelID = options.modelID;
