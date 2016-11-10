@@ -27,7 +27,6 @@ export function drawScatterplot() {
   // const rScale = d3.scale.linear()
   //   .range([0, 3]);
 
-  /* call API to get exemplar data */
   vis.apiConfig = worldCitiesConfig;
 
   vis.xCat = vis.apiConfig.defaultXVariable;
@@ -41,8 +40,6 @@ export function drawScatterplot() {
   const exemplarsFrame = vis.apiConfig.exemplarFrame;
   const frameID = exemplarsFrame;
   const columnOffset = vis.apiConfig.columnOffset;
-  // const columnCount = vis.apiConfig.columnCount;
-  // const queryUrl = `http://${server}:${port}/3/Frames/${exemplarsFrame}?column_offset=${columnOffset}&column_count=${columnCount}`;
 
   const getFrameDataOptions = {
     frameID,
@@ -52,9 +49,6 @@ export function drawScatterplot() {
     vis
   };
   getFrameData(null, null, getFrameDataOptions, parseAndPlot);
-
-  // d3.request(queryUrl)
-  //   .get(callback);
 
   const gui = new dat.GUI();
   gui.close();
