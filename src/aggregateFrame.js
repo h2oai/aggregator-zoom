@@ -2,15 +2,18 @@ import { poll } from './poll';
 
 export function aggregateFrame(options) {
   console.log('aggregateFrame was called');
-  console.log('options passed to aggregateFrame');
+  console.log('options passed to aggregateFrame', options);
   const server = options.server;
   const port = options.port;
   const modelID = options.modelID;
+  const radius_scale = options.radiusScale; // '0.6'; // '0.05'; // '0.005';
+
+  const successCallback = options.successCallback;
+  const errorCallback = options.errorCallback;
 
   // the big frame we want to aggregate
   const frameID = options.frameID;
   console.log('frameID to be aggregated', frameID);
-  const radius_scale = options.radiusScale; // '0.6'; // '0.05'; // '0.005';
 
   const ignore_const_cols = 'true';
   const categorical_encoding = 'AUTO';
@@ -44,7 +47,7 @@ export function aggregateFrame(options) {
       console.log('json response from aggregator model created on members frame', json);
       const jobKey = json.job.key.name;
 
-      // return frameID for new exmplars frame of aggregated values
+      // return frameID for new exemplars frame of aggregated values
       poll(
           () => {
             // get status of aggregator model training job
@@ -57,7 +60,11 @@ export function aggregateFrame(options) {
                 const readyForView = json.jobs[0].ready_for_view;
                 const status = json.jobs[0].status;
                 console.log('status', status);
-                if (readyForView) return true;
+                if (readyForView) {
+                  console.log('readyForView');
+                  successCallback();
+                  return true;
+                }
                 return undefined;
               });
           },
@@ -65,10 +72,12 @@ export function aggregateFrame(options) {
             // Done, success callback
             // return object with new exemplars frameID
             console.log('success callback from aggregateFrames');
+            if (typeof successCallback !== 'undefined') successCallback();
           },
           () => {
             // Error, failure callback
             console.log('error callback from aggregateFrames');
+            if (typeof errorCallback !== 'undefined') errorCallback();
           }
       );
     });

@@ -1,4 +1,5 @@
 import { aggregateFrame } from './aggregateFrame';
+// import { findRadiusScale } from './findRadiusScale';
 import * as _ from 'lodash';
 
 export function getFrameData(error, response, options, callback) {
@@ -102,17 +103,25 @@ export function getFrameData(error, response, options, callback) {
               // modelID is new, ok to proceed
               // aggregate the large members frame
               //
+              console.log('//');
+              console.log('// modelID is new, ok to proceed');
+              console.log('// aggregate the large members frame');
+              console.log('//');
               const ignoredColumns = _.pullAll(frame.columns, [xVariable, yVariable]);
               console.log('ignoredColumns from getFrameData', ignoredColumns);
+              console.log('frame', frame);
+              const radiusScaleFactor = 18166;
+              const radiusScale = frame.rowCount / radiusScaleFactor;
               const aggregateFrameOptions = {
                 server,
                 port,
                 frameID: frame.frameID,
-                radiusScale: 0.75, // TODO: pick a data-driven radius scale
+                radiusScale, // TODO: pick a data-driven radius scale
                 ignoredColumns,
                 modelID
               };
               aggregateFrame(aggregateFrameOptions);
+              // findRadiusScale(aggregateFrameOptions);
             }
           });
       } else {
