@@ -1,6 +1,6 @@
 import { getFrameData } from './getFrameData';
 import { parseAndPlot } from './parseAndPlot';
-import dat from 'dat-gui';
+import { drawControls } from './drawControls';
 import d3 from 'd3';
 import d3_request from 'd3-request';
 d3.request = d3_request.request;
@@ -50,37 +50,8 @@ export function drawScatterplot() {
   };
   getFrameData(null, null, getFrameDataOptions, parseAndPlot);
 
-  const gui = new dat.GUI();
-  gui.close();
-  d3.select('div.dg.ac')
-    .style({
-      position: 'fixed',
-      top: '5px',
-      left: '435px',
-      width: '250px'
-    });
-
-  const opts = {
-    showPointIds: true,
-    radius: 2
-  };
-
-  const idsController = gui.add(opts, 'showPointIds');
-
-  const radiusController = gui.add(opts, 'radius', 1, 8);
-
-  idsController.onFinishChange(value => {
-    if (value === true) {
-      vis.dots.selectAll('text')
-        .style('fill-opacity', 0.7);
-    } else {
-      vis.dots.selectAll('text')
-        .style('fill-opacity', 0);
-    }
-  });
-
-  radiusController.onFinishChange(value => {
-    d3.selectAll('circle')
-      .attr('r', value);
-  });
+  //
+  // setup controls widget
+  //
+  drawControls(vis);
 }
