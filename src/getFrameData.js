@@ -4,7 +4,7 @@ import { aggregateFrame } from './aggregateFrame';
 import * as _ from 'lodash';
 
 export function getFrameData(error, response, options, callback) {
-  console.log('getFrame was called');
+  console.log('getFrameData was called');
   console.log('response passed to getFrame', response);
   console.log('options passed to getFrame', options);
 
@@ -18,6 +18,7 @@ export function getFrameData(error, response, options, callback) {
   const xVariable = options.xVariable;
   const yVariable = options.yVariable;
   const maxMembers = options.maxMembers;
+  const vis = options.vis;
   // const modelID = options.modelID;
 
   //
@@ -92,7 +93,7 @@ export function getFrameData(error, response, options, callback) {
                           .then(res => res.json())
                           .then(json => {
                             // pass the json data to the provided callback
-                            callback(null, json);
+                            callback(null, json, vis);
                           });
                       });
                   } else {
@@ -136,7 +137,7 @@ export function getFrameData(error, response, options, callback) {
           .then(res => res.json())
           .then(json => {
             // pass the json data to the provided callback
-            callback(null, json);
+            callback(null, json, vis);
           });
       }
     });

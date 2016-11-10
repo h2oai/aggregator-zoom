@@ -1,6 +1,5 @@
-import { parseResponseObject } from './parseResponseObject';
-import { plotExemplars } from './plotExemplars';
 import { getFrameData } from './getFrameData';
+import { parseAndPlot } from './parseAndPlot';
 import dat from 'dat-gui';
 import d3 from 'd3';
 import d3_request from 'd3-request';
@@ -45,19 +44,12 @@ export function drawScatterplot() {
   // const columnCount = vis.apiConfig.columnCount;
   // const queryUrl = `http://${server}:${port}/3/Frames/${exemplarsFrame}?column_offset=${columnOffset}&column_count=${columnCount}`;
 
-  function parseAndPlot(error, response) {
-    console.log('response', response);
-    // const responseData = JSON.parse(response.response);
-    // console.log('responseData', responseData);
-    vis.exemplarData = parseResponseObject(response);
-    plotExemplars(vis);
-  }
-
   const getFrameDataOptions = {
     frameID,
     server,
     port,
-    columnOffset
+    columnOffset,
+    vis
   };
   getFrameData(null, null, getFrameDataOptions, parseAndPlot);
 
