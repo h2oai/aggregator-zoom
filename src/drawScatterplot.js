@@ -6,6 +6,11 @@ import d3 from 'd3';
 import d3_request from 'd3-request';
 d3.request = d3_request.request;
 
+import { worldCitiesConfig } from './config/worldCitiesConfig';
+// import { coverTypeConfig } from './config/coverTypeConfig';
+// import { grupoBimboGLMConfig } from './config/gruboBimboGLMConfig';
+// import { pcaConfig } from './pcaConfig';
+
 export function drawScatterplot() {
   const vis = {};
   vis.margin = { top: 50, right: 300, bottom: 50, left: 60 };
@@ -24,50 +29,7 @@ export function drawScatterplot() {
   //   .range([0, 3]);
 
   /* call API to get exemplar data */
-  vis.coverTypeConfig = {
-    server: 'mr-0xc8',
-    port: '55555',
-    exemplarFrame: 'aggregated_covtype_20k_data.hex_by_aggregatormodel',
-    columnOffset: '0',
-    columnCount: '10',
-    defaultXVariable: 'C10',
-    defaultYVariable: 'C1'
-  };
-
-  vis.pcaConfig = {
-    server: 'mr-0xc8',
-    port: '55555',
-    exemplarFrame: 'aggregated_pca_processed_events_sql_to_hex_by_aggregatormodel',
-    columnOffset: '0',
-    columnCount: '8',
-    defaultXVariable: 'PC1',
-    defaultYVariable: 'PC2'
-  };
-
-  vis.grupoBimboGLMConfig = {
-    server: '172.16.2.141',
-    port: '54321',
-    aggregatorModelID: 'aggregator-glm-81e8729d-e7a5-4b36-ae26-c6c55a2d94c5',
-    exemplarFrame: 'aggregated_combined-combined-predictions_8862_glm-81e8729d-e7a5-4b36-ae26-c6c55a2d94c5_on_Bimbo_valid_processed.hex-deviances_b87c_glm-81e8729d-e7a5-4b36-ae26-c6c55a2d94c5_on_Bimbo_valid_processed.hex-Bimbo_valid_processed.hex_by_aggregator-glm-81e8729d-e7a5-4b36-ae26-c6c55a2d94c5',
-    columnOffset: '0',
-    columnCount: '54',
-    defaultXVariable: 'predict',
-    defaultYVariable: 'deviance'
-  };
-
-  vis.worldCitiesConfig = {
-    server: '172.16.2.141',
-    port: '54321',
-    aggregatorModelID: 'aggregator-03753d72-06a3-4513-9953-e266164d394c',
-    exemplarFrame: 'aggregated_Key_Frame__worldcitiespop.hex_by_aggregator-03753d72-06a3-4513-9953-e266164d394c',
-    columnOffset: '0',
-    columnCount: '8',
-    defaultXVariable: 'Longitude',
-    defaultYVariable: 'Latitude',
-    tooltipVariables: ['City']
-  };
-
-  vis.apiConfig = vis.worldCitiesConfig;
+  vis.apiConfig = worldCitiesConfig;
 
   vis.xCat = vis.apiConfig.defaultXVariable;
   vis.yCat = vis.apiConfig.defaultYVariable;
