@@ -2,8 +2,6 @@ import { getFrameData } from './getFrameData';
 import { parseAndPlot } from './parseAndPlot';
 import { drawControls } from './drawControls';
 import d3 from 'd3';
-import d3_request from 'd3-request';
-d3.request = d3_request.request;
 
 import { worldCitiesConfig } from './config/worldCitiesConfig';
 // import { coverTypeConfig } from './config/coverTypeConfig';
