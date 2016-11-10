@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { drawScatterplot } from './scatter';
+import { drawScatterplot } from './drawScatterplot';
 
 export default class App extends Component {
   render() {
