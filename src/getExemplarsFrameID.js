@@ -31,4 +31,11 @@ export function getExemplarsFrameID(options, callback) {
         console.error('exemplarsFrameID is', exemplarsFrameID);
       }
     });
+
+  //
+  // callback function tree
+  // 
+  // getSubMemberFrameRowCount()
+  //    --> getSubMemberFrameData()
+  //        --> callback();
 }

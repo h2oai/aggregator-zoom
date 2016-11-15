@@ -38,4 +38,10 @@ export function getSubMemberFrameRowCount(options, callback) {
       };
       getSubMemberFrameData(getSubMemberFrameDataOptions, callback);
     });
+
+  //
+  // callback function tree
+  // 
+  // getSubMemberFrameData()
+  //   --> callback();
 }
