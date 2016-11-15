@@ -32,14 +32,16 @@ export function getFrameData(error, response, options, callback) {
     .then(res => res.json())
     .then(json => {
       console.log('json response from getFrameMetrics request', json);
-      let frame = {
+      const frame = {
         frameID: json.frames[0].frame_id.name,
         rowCount: json.frames[0].rows,
         columnCount: json.frames[0].column_count,
         columns: json.frames[0].columns.map(d => d.label)
       };
       console.log('frame', frame);
-
+      return frame;
+    })
+    .then(frame => {
       if (
         typeof maxMembers !== 'undefined' &&
         frame.rowCount > maxMembers
