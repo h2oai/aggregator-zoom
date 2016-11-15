@@ -45,7 +45,6 @@ export function getMembersData(vis) {
     .then(res => res.json())
     .then(json => {
       console.log(json);
-      // getMemberFrameDefaultRowCount(null, json);
       //
       // get the frame with member points
       //
@@ -60,23 +59,6 @@ export function getMembersData(vis) {
       };
       getFrameData(null, json, getFrameDataOptions, drawMembersData);
     });
-
-  /*
-  function getMemberFrameDefaultRowCount(error, response) {
-    console.log('getMemberFrameDefaultRowCount response', response);
-    const getFrameDataOptions = {
-      frameID,
-      server,
-      port,
-      columnOffset,
-      xVariable: vis.xCat,
-      yVariable: vis.yCat,
-      maxMembers: 663 // rowCount of current top-level exemplars frame
-    };
-    d3.request(getMemberFrameDefaultRowCountUrl)
-      .get((err, res) => getFrameData(err, res, getFrameDataOptions, drawMembersData));
-  }
-  */
 
   function drawMembersData(error, response) {
     console.log('response passed to drawMembersData', response);
