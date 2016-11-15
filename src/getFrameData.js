@@ -1,5 +1,4 @@
-
-import { getSubMemberFrameRowCount } from './getSubMemberFrameRowCount';
+import { getExemplarsFrameID } from './getExemplarsFrameID';
 import { aggregateFrame } from './aggregateFrame';
 // import { findRadiusScale } from './findRadiusScale';
 import * as _ from 'lodash';
@@ -59,30 +58,16 @@ export function getFrameData(error, response, options, callback) {
             if (modelIDs.indexOf(modelID) > -1) {
               console.log(`modelID ${modelID} already exists in h2o-3`);
               //
-              // go ahead and get the exemplars
+              // go ahead and get the exemplars FrameID from the current Aggregator model
               //
-              const getCurrentModelURL = `http://${server}:${port}/3/Models/${modelID}`;
-              fetch(getCurrentModelURL)
-                .then(res => res.json())
-                .then(json => {
-                  const exemplarsFrameID = json.models[0].output.output_frame.name;
-                  console.log('exemplarsFrameID', exemplarsFrameID);
-                  if (exemplarsFrameID !== null) {
-                    //
-                    // get the rowCount for this sub-member frame
-                    //
-                    const getSubMemberFrameRowCountOptions = {
-                      server,
-                      port,
-                      exemplarsFrameID,
-                      columnOffset,
-                      vis
-                    };
-                    getSubMemberFrameRowCount(getSubMemberFrameRowCountOptions, callback);
-                  } else {
-                    console.error('exemplarsFrameID is', exemplarsFrameID);
-                  }
-                });
+              const getExemplarsFrameIDOptions = {
+                server,
+                port,
+                modelID,
+                columnOffset,
+                vis
+              };
+              getExemplarsFrameID(getExemplarsFrameIDOptions, callback);
             } else {
               //
               // modelID is new, ok to proceed
