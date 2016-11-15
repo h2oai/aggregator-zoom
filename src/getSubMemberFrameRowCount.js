@@ -41,7 +41,7 @@ export function getSubMemberFrameRowCount(options, callback) {
 
   //
   // callback function tree
-  // 
+  //
   // getSubMemberFrameData()
   //   --> callback();
 }

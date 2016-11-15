@@ -17,7 +17,7 @@ export function getExemplarsFrameID(options, callback) {
       console.log('exemplarsFrameID', exemplarsFrameID);
       if (exemplarsFrameID !== null) {
         //
-        // get the rowCount for this sub-member frame
+        // get the rowCount for this secondary exemplars frame
         //
         const getSubMemberFrameRowCountOptions = {
           server,
@@ -34,7 +34,7 @@ export function getExemplarsFrameID(options, callback) {
 
   //
   // callback function tree
-  // 
+  //
   // getSubMemberFrameRowCount()
   //    --> getSubMemberFrameData()
   //        --> callback();

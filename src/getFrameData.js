@@ -1,12 +1,10 @@
-import { getExemplarsFrameID } from './getExemplarsFrameID';
-import { aggregateFrame } from './aggregateFrame';
+import { checkIfModelIDExists } from './checkIfModelIDExists';
 // import { findRadiusScale } from './findRadiusScale';
-import * as _ from 'lodash';
 
 export function getFrameData(error, response, options, callback) {
   console.log('getFrameData was called');
-  console.log('response passed to getFrame', response);
-  console.log('options passed to getFrame', options);
+  console.log('response passed to getFrameData', response);
+  console.log('options passed to getFrameData', options);
 
   // call the h2o-3 API to get data for all rows
   // from an h2o-3 data frame
@@ -50,50 +48,17 @@ export function getFrameData(error, response, options, callback) {
         //
         // check if modelID already exists on our h2o cluster
         //
-        const getModelsURL = `http://${server}:${port}/3/Models`;
-        fetch(getModelsURL)
-          .then(res => res.json())
-          .then(json => {
-            const modelIDs = json.models.map(d => d.model_id.name);
-            if (modelIDs.indexOf(modelID) > -1) {
-              console.log(`modelID ${modelID} already exists in h2o-3`);
-              //
-              // go ahead and get the exemplars FrameID from the current Aggregator model
-              //
-              const getExemplarsFrameIDOptions = {
-                server,
-                port,
-                modelID,
-                columnOffset,
-                vis
-              };
-              getExemplarsFrameID(getExemplarsFrameIDOptions, callback);
-            } else {
-              //
-              // modelID is new, ok to proceed
-              // aggregate the large members frame
-              //
-              console.log('//');
-              console.log('// modelID is new, ok to proceed');
-              console.log('// aggregate the large members frame');
-              console.log('//');
-              const ignoredColumns = _.pullAll(frame.columns, [xVariable, yVariable]);
-              console.log('ignoredColumns from getFrameData', ignoredColumns);
-              console.log('frame', frame);
-              const radiusScaleFactor = 18166;
-              const radiusScale = frame.rowCount / radiusScaleFactor;
-              const aggregateFrameOptions = {
-                server,
-                port,
-                frameID: frame.frameID,
-                radiusScale, // TODO: pick a data-driven radius scale
-                ignoredColumns,
-                modelID
-              };
-              aggregateFrame(aggregateFrameOptions);
-              // findRadiusScale(aggregateFrameOptions);
-            }
-          });
+        const checkIfModelIDExistsOptions = {
+          server,
+          port,
+          columnOffset,
+          vis,
+          frame,
+          xVariable,
+          yVariable,
+          modelID
+        };
+        checkIfModelIDExists(checkIfModelIDExistsOptions, callback);
       } else {
         // specify columnCount and rowCount so that h2o-3 will return all data from the frame
         const columnCount = frame.columnCount;
