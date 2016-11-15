@@ -1,6 +1,6 @@
 
+import { getSubMemberFrameRowCount } from './getSubMemberFrameRowCount';
 import { aggregateFrame } from './aggregateFrame';
-import { getSubMemberFrameData } from './getSubMemberFrameData';
 // import { findRadiusScale } from './findRadiusScale';
 import * as _ from 'lodash';
 
@@ -27,7 +27,7 @@ export function getFrameData(error, response, options, callback) {
   //
   // ignore fields that are not the row count
   const getFrameMetricsOptions = '?_exclude_fields=frames/__meta,frames/chunk_summary,frames/default_percentiles,frames/distribution_summary,__meta';
-  let getFrameMetricsURL = `${baseURL}/Frames/${frameID}/summary${getFrameMetricsOptions}`;
+  const getFrameMetricsURL = `${baseURL}/Frames/${frameID}/summary${getFrameMetricsOptions}`;
 
   fetch(getFrameMetricsURL, { method: 'GET' })
     .then(res => res.json())
@@ -71,33 +71,14 @@ export function getFrameData(error, response, options, callback) {
                     //
                     // get the rowCount for this sub-member frame
                     //
-                    getFrameMetricsURL = `${baseURL}/Frames/${exemplarsFrameID}/summary${getFrameMetricsOptions}`;
-                    fetch(getFrameMetricsURL, { method: 'GET' })
-                      .then(res => res.json())
-                      .then(json => {
-                        console.log('json response from getFrameMetrics request', json);
-                        frame = {
-                          frameID: json.frames[0].frame_id.name,
-                          rowCount: json.frames[0].rows,
-                          columnCount: json.frames[0].column_count,
-                          columns: json.frames[0].columns.map(d => d.label)
-                        };
-                        console.log('frame', frame);
-                        //
-                        // get the data for the sub-member frame
-                        // specify columnCount and rowCount so that h2o-3 will return all data from the frame
-                        //
-                        // TODO: generalize this to a getFrameData call
-                        const getSubMemberFrameDataOptions = {
-                          frame,
-                          server,
-                          port,
-                          exemplarsFrameID,
-                          columnOffset,
-                          vis
-                        };
-                        getSubMemberFrameData(getSubMemberFrameDataOptions, callback);
-                      });
+                    const getSubMemberFrameRowCountOptions = {
+                      server,
+                      port,
+                      exemplarsFrameID,
+                      columnOffset,
+                      vis
+                    };
+                    getSubMemberFrameRowCount(getSubMemberFrameRowCountOptions, callback);
                   } else {
                     console.error('exemplarsFrameID is', exemplarsFrameID);
                   }
