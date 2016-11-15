@@ -1,15 +1,12 @@
 import { poll } from './poll';
 
-export function aggregateFrame(options) {
+export function aggregateFrame(options, successCallback, errorCallback) {
   console.log('aggregateFrame was called');
   console.log('options passed to aggregateFrame', options);
   const server = options.server;
   const port = options.port;
   const modelID = options.modelID;
   const radius_scale = options.radiusScale; // '0.6'; // '0.05'; // '0.005';
-
-  const successCallback = options.successCallback;
-  const errorCallback = options.errorCallback;
 
   // the big frame we want to aggregate
   const frameID = options.frameID;

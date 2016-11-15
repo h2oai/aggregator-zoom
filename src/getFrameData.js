@@ -97,16 +97,6 @@ export function getFrameData(error, response, options, callback) {
                           vis
                         };
                         getSubMemberFrameData(getSubMemberFrameDataOptions, callback);
-                        // const columnCount = frame.columnCount;
-                        // const rowCount = frame.rowCount;
-                        // const getFrameURL = `${baseURL}/Frames/${exemplarsFrameID}?column_offset=${columnOffset}&column_count=${columnCount}&row_count=${rowCount}`;
-                        // console.log('getFrameURL', getFrameURL);
-                        // fetch(getFrameURL, { method: 'GET' })
-                        //   .then(res => res.json())
-                        //   .then(json => {
-                        //     // pass the json data to the provided callback
-                        //     callback(null, json, vis);
-                        //   });
                       });
                   } else {
                     console.error('exemplarsFrameID is', exemplarsFrameID);

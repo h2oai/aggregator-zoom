@@ -24,9 +24,8 @@ export function findRadiusScale(options) {
     modelID,
     ignoredColumns,
     radiusScale,
-    successCallback: getExemplarFrameRowCount
   };
-  aggregateFrame(aggregateFrameOptions);
+  aggregateFrame(aggregateFrameOptions, getExemplarFrameRowCount, null);
 
   function getExemplarFrameRowCount() {
     //
