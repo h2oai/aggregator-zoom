@@ -16,17 +16,15 @@ export function getMembersData(vis) {
   const server = vis.apiConfig.server;
   const port = vis.apiConfig.port;
   const columnOffset = vis.apiConfig.columnOffset;
-  const baseUrl = `http://${server}:${port}/3`;
-
   const xVariable = vis.xCat;
   const yVariable = vis.yCat;
   const maxMembers = 663;
 
   // with the default rowCount, which is the min(actual rowCount, 100 rows)
-  const getMemberFrameDefaultRowCountUrl = `${baseUrl}/Frames/${frameID}?column_offset=${columnOffset}`; // &column_count=${columnCount}
+  const getMemberFrameDefaultRowCountUrl = `http://${server}:${port}/3/Frames/${frameID}?column_offset=${columnOffset}`; // &column_count=${columnCount}
   console.log('getMemberFrameDefaultRowCountUrl', getMemberFrameDefaultRowCountUrl);
 
-  const generateMemberFrameUrl = `${baseUrl}/Predictions/models/${aggregatorModelID}/frames/null`;
+  const generateMemberFrameUrl = `http://${server}:${port}/3/Predictions/models/${aggregatorModelID}/frames/null`;
   const generateMemberFrameData = `predictions_frame=members_exemplar${exemplarId}&exemplar_index=${exemplarId}`;
   console.log('generateMemberFrameUrl', generateMemberFrameUrl);
   console.log('generateMemberFrameData', generateMemberFrameData);
@@ -44,7 +42,7 @@ export function getMembersData(vis) {
   fetch(generateMemberFrameUrl, fetchOptions)
     .then(res => res.json())
     .then(json => {
-      console.log(json);
+      console.log('json response from getMembersData', json);
       //
       // get the frame with member points
       //

@@ -11,6 +11,15 @@ export function checkIfModelIDExists(options, callback) {
   const xVariable = options.xVariable;
   const yVariable = options.yVariable;
   const modelID = options.modelID;
+
+  function successCallback() {
+    console.log('successCallback from checkIfModelIDExists was called');
+  }
+
+  function errorCallback() {
+    console.log('errorCallback from checkIfModelIDExists was called');
+  }
+
   //
   // check if modelID already exists on our h2o cluster
   //
@@ -22,7 +31,7 @@ export function checkIfModelIDExists(options, callback) {
       if (modelIDs.indexOf(modelID) > -1) {
         console.log(`modelID ${modelID} already exists in h2o-3`);
         //
-        // go ahead and get the exemplars FrameID from the current Aggregator model
+        // get the exemplars frame from the current Aggregator model
         //
         const getExemplarsFrameIDOptions = {
           server,
@@ -54,7 +63,8 @@ export function checkIfModelIDExists(options, callback) {
           ignoredColumns,
           modelID
         };
-        aggregateFrame(aggregateFrameOptions);
+        console.log('aggregateFrameOptions', aggregateFrameOptions);
+        aggregateFrame(aggregateFrameOptions, successCallback, errorCallback);
         // findRadiusScale(aggregateFrameOptions);
       }
     });

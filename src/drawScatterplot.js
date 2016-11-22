@@ -3,8 +3,8 @@ import { parseAndPlot } from './parseAndPlot';
 import { drawControls } from './drawControls';
 import d3 from 'd3';
 
-import { worldCitiesCorsairConfig } from './config/worldCitiesCorsairConfig';
-// import { worldCitiesConfig } from './config/worldCitiesConfig';
+// import { worldCitiesCorsairConfig } from './config/worldCitiesCorsairConfig';
+import { worldCitiesConfig } from './config/worldCitiesConfig';
 // import { coverTypeConfig } from './config/coverTypeConfig';
 // import { grupoBimboGLMConfig } from './config/gruboBimboGLMConfig';
 // import { pcaConfig } from './pcaConfig';
@@ -26,7 +26,7 @@ export function drawScatterplot() {
   // const rScale = d3.scale.linear()
   //   .range([0, 3]);
 
-  vis.apiConfig = worldCitiesCorsairConfig;
+  vis.apiConfig = worldCitiesConfig;
 
   vis.xCat = vis.apiConfig.defaultXVariable;
   vis.yCat = vis.apiConfig.defaultYVariable;

@@ -5,7 +5,7 @@ export function aggregateFrame(options, successCallback, errorCallback) {
   console.log('options passed to aggregateFrame', options);
   const server = options.server;
   const port = options.port;
-  const modelID = options.modelID;
+  // const modelID = options.modelID;
   const radius_scale = options.radiusScale; // '0.6'; // '0.05'; // '0.005';
 
   // the big frame we want to aggregate
@@ -33,7 +33,8 @@ export function aggregateFrame(options, successCallback, errorCallback) {
 
   const fetchOptions = {
     method: 'POST',
-    body: `model_id=${modelID}&training_frame=${frameID}&ignored_columns=${ignored_columns}&ignore_const_cols=${ignore_const_cols}&radius_scale=${radius_scale}&categorical_encoding=${categorical_encoding}&transform=${transform}`,
+    // body: `model_id=${modelID}&training_frame=${frameID}&ignored_columns=${ignored_columns}&ignore_const_cols=${ignore_const_cols}&radius_scale=${radius_scale}&categorical_encoding=${categorical_encoding}&transform=${transform}`,
+    body: `training_frame=${frameID}&ignored_columns=${ignored_columns}&ignore_const_cols=${ignore_const_cols}&radius_scale=${radius_scale}&categorical_encoding=${categorical_encoding}&transform=${transform}`,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
@@ -71,9 +72,10 @@ export function aggregateFrame(options, successCallback, errorCallback) {
             console.log('success callback from aggregateFrames');
             if (typeof successCallback !== 'undefined') successCallback();
           },
-          () => {
+          (error) => {
             // Error, failure callback
             console.log('error callback from aggregateFrames');
+            console.error(error);
             if (typeof errorCallback !== 'undefined') errorCallback();
           }
       );
