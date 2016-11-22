@@ -77,7 +77,8 @@ export function aggregateFrame(options, successCallback, errorCallback) {
             console.log('error callback from aggregateFrames');
             console.error(error);
             if (typeof errorCallback !== 'undefined') errorCallback();
-          }
+          },
+          20000
       );
     });
 }
