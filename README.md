@@ -5,12 +5,8 @@
 install dependencies  
 `npm install`  
 
-now, open a browser with CORS disabled  
-
-open chrome with cross-origin protection disabled  
+now, open a browser with CORS (cross-origin protection) disabled  
 `open -a Google\ Chrome --args --disable-web-security --user-data-dir`  
-
-open chrome canary with cross-origin protection disabled  
 `open -a Google\ Chrome\ Canary --args --disable-web-security --user-data-dir`  
 
 start the app  
@@ -30,10 +26,8 @@ tell the visualization to use your new config file in
 
 now, open a browser with CORS disabled  
 
-open chrome with cross-origin protection disabled  
+now, open a browser with CORS (cross-origin protection) disabled  
 `open -a Google\ Chrome --args --disable-web-security --user-data-dir`  
-
-open chrome canary with cross-origin protection disabled  
 `open -a Google\ Chrome\ Canary --args --disable-web-security --user-data-dir`  
 
 start the app  
