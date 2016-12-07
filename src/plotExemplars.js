@@ -31,7 +31,6 @@ export function plotExemplars(vis) {
   const yDMin = yMin - (yExtent * domainPaddingFactor);
 
   vis.exemplarData.forEach(d => {
-    console.log('d from vis.exemplarData', d);
     if (typeof d.counts === 'undefined') { d.counts = 0; }
   });
 

@@ -18,7 +18,7 @@ export function getMembersData(vis) {
   const columnOffset = vis.apiConfig.columnOffset;
   const xVariable = vis.xCat;
   const yVariable = vis.yCat;
-  const maxMembers = 100000; // 663;
+  const maxMembers = 10000; // 663;
 
   // with the default rowCount, which is the min(actual rowCount, 100 rows)
   const getMemberFrameDefaultRowCountUrl = `http://${server}:${port}/3/Frames/${frameID}?column_offset=${columnOffset}`; // &column_count=${columnCount}

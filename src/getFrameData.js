@@ -1,4 +1,4 @@
-import { checkIfModelIDExists } from './checkIfModelIDExists';
+// import { checkIfModelIDExists } from './checkIfModelIDExists';
 // import { findRadiusScale } from './findRadiusScale';
 
 export function getFrameData(error, response, options, callback) {
@@ -13,8 +13,8 @@ export function getFrameData(error, response, options, callback) {
   const port = options.port;
   const columnOffset = options.columnOffset;
   const baseURL = `http://${server}:${port}/3`;
-  const xVariable = options.xVariable;
-  const yVariable = options.yVariable;
+  // const xVariable = options.xVariable;
+  // const yVariable = options.yVariable;
   const maxMembers = options.maxMembers;
   const vis = options.vis;
   // const modelID = options.modelID;
