@@ -44,6 +44,7 @@ export function aggregateFrame(options, successCallback, errorCallback) {
     .then(json => {
       console.log('json response from aggregator model created on members frame', json);
       const jobKey = json.job.key.name;
+      console.log('jobKey for aggregator model currently training', jobKey);
 
       // return frameID for new exemplars frame of aggregated values
       poll(
