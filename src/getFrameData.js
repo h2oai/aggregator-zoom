@@ -44,21 +44,23 @@ export function getFrameData(error, response, options, callback) {
         typeof maxMembers !== 'undefined' &&
         frame.rowCount > maxMembers
       ) {
-        const modelID = `aggregator-${frameID}`;
-        //
-        // check if modelID already exists on our h2o cluster
-        //
-        const checkIfModelIDExistsOptions = {
-          server,
-          port,
-          columnOffset,
-          vis,
-          frame,
-          xVariable,
-          yVariable,
-          modelID
-        };
-        checkIfModelIDExists(checkIfModelIDExistsOptions, callback);
+        console.log(`members frame ${frame.frameID} has ${frame.rowCount} rows`);
+        console.log(`this is more than the ${maxMembers} rows we can show comfortably`);
+        // const modelID = `aggregator-${frameID}`;
+        // //
+        // // check if modelID already exists on our h2o cluster
+        // //
+        // const checkIfModelIDExistsOptions = {
+        //   server,
+        //   port,
+        //   columnOffset,
+        //   vis,
+        //   frame,
+        //   xVariable,
+        //   yVariable,
+        //   modelID
+        // };
+        // checkIfModelIDExists(checkIfModelIDExistsOptions, callback);
       } else {
         // specify columnCount and rowCount so that h2o-3 will return all data from the frame
         const columnCount = frame.columnCount;
