@@ -11,9 +11,9 @@ export function plotExemplars(vis) {
   console.log('vis', vis);
 
   console.log('vis.exemplarData', vis.exemplarData);
-  const exemplar = vis.exemplarData
-    .filter(d => +d.C10 === 6279 && +d.C1 === 2596)[0];
-  console.log('exemplar', exemplar);
+  // const exemplar = vis.exemplarData
+  //   .filter(d => +d.C10 === 6279 && +d.C1 === 2596)[0];
+  // console.log('exemplar', exemplar);
 
   // TODO define this in terms of the max point radius
   const domainPaddingFactor = 0.1;
@@ -30,12 +30,22 @@ export function plotExemplars(vis) {
   const yDMax = yMax + (yExtent * domainPaddingFactor);
   const yDMin = yMin - (yExtent * domainPaddingFactor);
 
+  vis.exemplarData.forEach(d => {
+    console.log('d from vis.exemplarData', d);
+    if (typeof d.counts === 'undefined') { d.counts = 0; }
+  });
+
   vis.x.domain([xDMin, xDMax]);
   vis.y.domain([yDMin, yDMax]);
+  vis.opacityScale
+    .exponent(0.5)
+    .domain(d3.extent(vis.exemplarData, d => d.counts));
+
 
   console.log('vis.exemplarData', vis.exemplarData);
   console.log('vis.x.domain()', vis.x.domain());
   console.log('vis.y.domain()', vis.y.domain());
+  console.log('vis.opacityScale.domain()', vis.opacityScale.domain());
 
   vis.xAxis = d3.svg.axis()
     .scale(vis.x)
@@ -74,7 +84,7 @@ export function plotExemplars(vis) {
         }
       }
       let memberCount = 0;
-      if (typeof d.counts !== 'undefined') { memberCount = d.counts }; 
+      if (typeof d.counts !== 'undefined') { memberCount = d.counts; }
       console.log('tooltipVariablesHTML', tooltipVariablesHTML);
       return `${tooltipVariablesHTML}members: ${memberCount} <br> ${vis.xCat}: ${d[vis.xCat]} <br> ${vis.yCat}: ${d[vis.yCat]}`;
     });
@@ -145,13 +155,15 @@ export function plotExemplars(vis) {
     //   if (d.C10 === exemplar[vis.xCat] && d.C1 === exemplar[vis.yCat]) { return 4; }
     //   return 2;
     // })
-    .style('fill', 'darkgray')
+    .style('fill', '#1f78b4')
+    // .style('fill', 'darkgray')
     // .style('fill', d => color(d[colorCat]); })
     // .style('fill', d => {
     //   if (d.C10 === exemplar[vis.xCat] && d.C1 === exemplar[vis.yCat]) { return 'steelblue'; }
     //   return 'darkgray';
     // })
-    .style('fill-opacity', 1)
+    .style('fill-opacity', d => vis.opacityScale(d.counts))
+    // .style('fill-opacity', 1)
     // .style('fill-opacity', d => {
     //   if (d.C10 === exemplar[vis.xCat] && d.C1 === exemplar[vis.yCat]) { return 1; }
     //   return 0.2;
@@ -161,8 +173,9 @@ export function plotExemplars(vis) {
 
   vis.dots
     .append('text')
-    .style('fill', 'black')
-    .style('fill-opacity', 0.7)
+    .style('fill', '#1f78b4')
+    .style('fill-opacity', d => vis.opacityScale(d.counts))
+    .style('font-weight', 300)
     .style('font-size', 8)
     .attr('dx', '.35em')
     .attr('dy', '.35em')

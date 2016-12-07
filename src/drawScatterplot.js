@@ -23,6 +23,9 @@ export function drawScatterplot() {
   vis.y = d3.scale.linear()
     .range([vis.height, 0]).nice();
 
+  vis.opacityScale = d3.scale.pow()
+    .range([0.05, 1]);
+
   // const rScale = d3.scale.linear()
   //   .range([0, 3]);
 
