@@ -34,3 +34,5 @@ start the app
 `npm run start`  
 
 visit [localhost:3000](localhost:3000)  
+
+![aggregator-zoom-color-2](https://cloud.githubusercontent.com/assets/2119400/20991759/fe604b1c-bc94-11e6-9789-c2daecd99c2a.gif)
