@@ -73,8 +73,10 @@ export function plotExemplars(vis) {
           tooltipVariablesHTML = vis.tooltipVariables.reduce((a, b) => `${d[a]} <br> `.concat(`${d[b]} <br> `));
         }
       }
+      let memberCount = 0;
+      if (typeof d.counts !== 'undefined') { memberCount = d.counts }; 
       console.log('tooltipVariablesHTML', tooltipVariablesHTML);
-      return `${tooltipVariablesHTML}'members': ${d.counts} <br> ${vis.xCat}: ${d[vis.xCat]} <br> ${vis.yCat}: ${d[vis.yCat]}`;
+      return `${tooltipVariablesHTML}members: ${memberCount} <br> ${vis.xCat}: ${d[vis.xCat]} <br> ${vis.yCat}: ${d[vis.yCat]}`;
     });
 
   vis.svg.call(vis.tip);
