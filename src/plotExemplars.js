@@ -84,7 +84,15 @@ export function plotExemplars(vis) {
         if (vis.tooltipVariables.length === 1) {
           tooltipVariablesHTML = `${d[vis.tooltipVariables[0]]} <br> `;
         } else {
-          tooltipVariablesHTML = vis.tooltipVariables.reduce((a, b) => `${d[a]} <br> `.concat(`${d[b]} <br> `));
+          if (typeof vis.apiConfig.tooltipOnlyValues !== 'undefined') {
+            vis.tooltipVariables.forEach(e => {
+              tooltipVariablesHTML = [tooltipVariablesHTML, `${d[e]} <br> `].join('');
+            });
+          } else {
+            vis.tooltipVariables.forEach(e => {
+              tooltipVariablesHTML = [tooltipVariablesHTML, `${e}: ${d[e]} <br> `].join('');
+            });
+          }
         }
       }
       let memberCount = 0;

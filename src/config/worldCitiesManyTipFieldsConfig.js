@@ -1,4 +1,4 @@
-export const worldCitiesConfig = {
+export const worldCitiesManyTipFieldsConfig = {
   server: '172.16.2.141',
   port: '54321',
   aggregatorModelID: 'aggregator-f34c7f25-18f6-4eab-a4e2-1868378fde15',
@@ -7,8 +7,12 @@ export const worldCitiesConfig = {
   columnCount: '8',
   defaultXVariable: 'Longitude',
   defaultYVariable: 'Latitude',
-  tooltipVariables: ['City'],
-  tooltipOnlyValues: true,
+  tooltipVariables: [
+    'Country',
+    'City',
+    'AccentCity',
+    'Region'
+  ],
   opacityMin: 0.05,
   opacityScaleExponent: 0.5
 };

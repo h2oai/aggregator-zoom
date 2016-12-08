@@ -3,15 +3,16 @@ import { parseAndPlot } from './parseAndPlot';
 import { drawControls } from './drawControls';
 import d3 from 'd3';
 
+import { worldCitiesManyTipFieldsConfig } from './config/worldCitiesManyTipFieldsConfig';
 // import { worldCitiesCorsairConfig } from './config/worldCitiesCorsairConfig';
-import { worldCitiesConfig } from './config/worldCitiesConfig';
+// import { worldCitiesConfig } from './config/worldCitiesConfig';
 // import { coverTypeConfig } from './config/coverTypeConfig';
 // import { grupoBimboGLMConfig } from './config/gruboBimboGLMConfig';
 // import { pcaConfig } from './pcaConfig';
 
 export function drawScatterplot() {
   const vis = {};
-  vis.apiConfig = worldCitiesConfig;
+  vis.apiConfig = worldCitiesManyTipFieldsConfig;
 
   vis.margin = { top: 50, right: 300, bottom: 50, left: 60 };
   vis.outerWidth = 960; // 3648
