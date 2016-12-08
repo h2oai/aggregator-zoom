@@ -7,5 +7,7 @@ export const worldCitiesConfig = {
   columnCount: '8',
   defaultXVariable: 'Longitude',
   defaultYVariable: 'Latitude',
-  tooltipVariables: ['City']
+  tooltipVariables: ['City'],
+  opacityMin: 0.05,
+  opacityScaleExponent: 0.5
 };

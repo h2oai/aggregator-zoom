@@ -11,11 +11,18 @@ import { worldCitiesConfig } from './config/worldCitiesConfig';
 
 export function drawScatterplot() {
   const vis = {};
+  vis.apiConfig = worldCitiesConfig;
+
   vis.margin = { top: 50, right: 300, bottom: 50, left: 60 };
   vis.outerWidth = 960; // 3648
   vis.outerHeight = 500; // 1900
   vis.width = vis.outerWidth - vis.margin.left - vis.margin.right;
   vis.height = vis.outerHeight - vis.margin.top - vis.margin.bottom;
+
+  let colorScaleRangeMin = 0.05;
+  if (typeof vis.apiConfig.opacityMin !== 'undefined') {
+    colorScaleRangeMin = vis.apiConfig.opacityMin;
+  }
 
   vis.x = d3.scale.linear()
     .range([0, vis.width]).nice();
@@ -24,12 +31,10 @@ export function drawScatterplot() {
     .range([vis.height, 0]).nice();
 
   vis.opacityScale = d3.scale.pow()
-    .range([0.05, 1]);
+    .range([colorScaleRangeMin, 1]);
 
   // const rScale = d3.scale.linear()
   //   .range([0, 3]);
-
-  vis.apiConfig = worldCitiesConfig;
 
   vis.xCat = vis.apiConfig.defaultXVariable;
   vis.yCat = vis.apiConfig.defaultYVariable;

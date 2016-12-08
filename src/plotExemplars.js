@@ -34,10 +34,15 @@ export function plotExemplars(vis) {
     if (typeof d.counts === 'undefined') { d.counts = 0; }
   });
 
+  let opacityScaleExponent = 0.5;
+  if (typeof vis.apiConfig.opacityScaleExponent !== 'undefined') {
+    opacityScaleExponent = vis.apiConfig.opacityScaleExponent;
+  }
+
   vis.x.domain([xDMin, xDMax]);
   vis.y.domain([yDMin, yDMax]);
   vis.opacityScale
-    .exponent(0.5)
+    .exponent(opacityScaleExponent)
     .domain(d3.extent(vis.exemplarData, d => d.counts));
 
 
