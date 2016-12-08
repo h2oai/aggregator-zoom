@@ -8,5 +8,6 @@ export const worldCitiesConfig = {
   defaultXVariable: 'Longitude',
   defaultYVariable: 'Latitude',
   tooltipVariables: ['City'],
-  opacityMin: 0.05
+  opacityMin: 0.05,
+  opacityScaleExponent: 0.5
 };
