@@ -14,7 +14,7 @@
   },
   "private": true,
   "author": "h2o.ai",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "devDependencies": {
     "babel-cli": "^6.7.5",
     "babel-loader": "^6.2.4",
